@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+  postgres_db:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: gakuya
+      POSTGRES_PASSWORD: secret123
+      POSTGRES_DB: user_events
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: ./api
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres_db
+
+volumes:
+  pgdata:
